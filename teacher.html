@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>لوحة المدرس | نظام إدارة المدرسة</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="teacher.css">
+</head>
+<body>
+  <div id="authOverlay" class="auth-overlay">
+    <div class="auth-card">
+      <div class="brand-mark">T</div>
+      <h2>لوحة المدرس</h2>
+      <p id="authMessage">جارٍ التحقق من جلسة المدرس...</p>
+      <form id="loginForm" class="login-form hidden">
+        <input id="loginEmail" type="email" placeholder="البريد الإلكتروني" required>
+        <input id="loginPassword" type="password" placeholder="كلمة المرور" required>
+        <button class="primary" type="submit">تسجيل الدخول</button>
+        <small id="loginError"></small>
+      </form>
+    </div>
+  </div>
+
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="brand-mark">T</div>
+        <div><strong id="schoolNameSide">مدرستي</strong><span>لوحة المدرس</span></div>
+      </div>
+
+      <nav class="nav">
+        <button class="nav-item active" data-section="dashboard">⌂ الرئيسية</button>
+        <button class="nav-item" data-section="assignments">📚 تكليفاتي</button>
+        <button class="nav-item" data-section="students">👨‍🎓 طلابي</button>
+        <button class="nav-item" data-section="grades">📊 الدرجات</button>
+        <button class="nav-item" data-section="attendance">✓ الحضور</button>
+        <button class="nav-item" data-section="exams">📝 الامتحانات</button>
+        <button class="nav-item" data-section="schedule">▦ جدولي</button>
+        <button class="nav-item" data-section="homework">📖 الواجبات</button>
+        <button class="nav-item" data-section="announcements">🔔 التنبيهات</button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="teacher-mini">
+          <div class="avatar">م</div>
+          <div><strong id="teacherName">المدرس</strong><small id="teacherEmail">...</small></div>
+        </div>
+        <button id="logoutBtn" class="logout">تسجيل الخروج</button>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <button id="menuBtn" class="icon-btn mobile-only">☰</button>
+        <div><span class="eyebrow">الإدارة التعليمية</span><h1 id="pageTitle">لوحة المدرس</h1></div>
+        <div class="top-actions">
+          <span id="connectionStatus" class="status-pill">Firebase</span>
+          <button class="icon-btn" data-section="announcements">🔔</button>
+        </div>
+      </header>
+
+      <div id="toast" class="toast"></div>
+
+      <section id="dashboard" class="page-section active">
+        <div class="welcome">
+          <div>
+            <span class="eyebrow">مساحتك التعليمية</span>
+            <h2>مرحباً، <span id="welcomeName">المدرس</span> 👋</h2>
+            <p>هنا تظهر المواد والصفوف والشعب التي تم تكليفك بتدريسها فقط.</p>
+          </div>
+          <div class="date-box" id="todayDate"></div>
+        </div>
+
+        <div class="stats-grid">
+          <article class="stat-card"><div class="stat-icon">📚</div><div><span>التكليفات</span><strong id="statAssignments">0</strong></div></article>
+          <article class="stat-card"><div class="stat-icon">👨‍🎓</div><div><span>طلابي</span><strong id="statStudents">0</strong></div></article>
+          <article class="stat-card"><div class="stat-icon">📝</div><div><span>واجباتي</span><strong id="statHomework">0</strong></div></article>
+          <article class="stat-card present"><div class="stat-icon">✓</div><div><span>حضور اليوم</span><strong id="statPresent">0</strong></div></article>
+          <article class="stat-card absent"><div class="stat-icon">!</div><div><span>غياب اليوم</span><strong id="statAbsent">0</strong></div></article>
+        </div>
+
+        <div class="section-head compact">
+          <div><span class="eyebrow">التدريس</span><h2>تكليفاتي الحالية</h2></div>
+          <button class="text-btn" data-section="assignments">عرض الكل</button>
+        </div>
+        <div id="assignmentCards" class="cards-grid"></div>
+
+        <div class="two-col">
+          <div class="panel">
+            <div class="panel-head"><div><h3>الحضور اليوم</h3><p>ملخص الطلاب في الشعب التي تدرّسها</p></div></div>
+            <div class="attendance-summary">
+              <div><span>حاضر</span><strong id="sumPresent">0</strong></div>
+              <div><span>غائب</span><strong id="sumAbsent">0</strong></div>
+              <div><span>متأخر</span><strong id="sumLate">0</strong></div>
+              <div><span>إجازة</span><strong id="sumLeave">0</strong></div>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-head"><div><h3>آخر التنبيهات</h3></div></div>
+            <div id="latestAnnouncements" class="activity-list"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="assignments" class="page-section">
+        <div class="section-head"><div><span class="eyebrow">التدريس</span><h2>تكليفاتي</h2><p>كل مادة مرتبطة بالصف والشعبة التي كلفك المدير بها.</p></div></div>
+        <div id="assignmentsList" class="cards-grid"></div>
+      </section>
+
+      <section id="students" class="page-section">
+        <div class="section-head"><div><span class="eyebrow">الطلاب</span><h2>طلابي</h2><p>يظهر فقط الطلاب ضمن الصفوف والشعب التي تدرّسها.</p></div></div>
+        <div class="toolbar"><input id="studentSearch" placeholder="ابحث باسم الطالب أو الرقم..."><select id="studentAssignmentFilter"></select></div>
+        <div class="table-wrap"><table><thead><tr><th>الرقم</th><th>الاسم</th><th>الصف</th><th>الشعبة</th><th>الحالة</th></tr></thead><tbody id="studentsTable"></tbody></table></div>
+      </section>
+
+      <section id="grades" class="page-section">
+        <div class="section-head"><div><span class="eyebrow">التقييم</span><h2>الدرجات</h2><p>إضافة وتعديل درجات الطلاب ضمن تكليفاتك.</p></div><button class="primary" id="addGradeBtn">＋ إدخال درجة</button></div>
+        <div class="toolbar"><input id="gradeSearch" placeholder="ابحث بالطالب أو المادة..."></div>
+        <div class="table-wrap"><table><thead><tr><th>الطالب</th><th>المادة</th><th>الامتحان</th><th>الدرجة</th><th>التاريخ</th><th>إجراء</th></tr></thead><tbody id="gradesTable"></tbody></table></div>
+      </section>
+
+      <section id="attendance" class="page-section">
+        <div class="section-head"><div><span class="eyebrow">الحضور</span><h2>حضور الطلاب</h2><p>تسجيل الحضور للطلاب ضمن تكليفاتك.</p></div></div>
+        <div class="toolbar"><input id="attendanceDate" type="date"><select id="attendanceAssignmentFilter"></select><button class="secondary" id="loadAttendanceBtn">تحميل</button></div>
+        <div class="table-wrap"><table><thead><tr><th>الطالب</th><th>الصف</th><th>الشعبة</th><th>الحالة</th><th>إجراء</th></tr></thead><tbody id="attendanceTable"></tbody></table></div>
+      </section>
+
+      <section id="exams" class="page-section">
+        <div class="section-head"><div><span class="eyebrow">الاختبارات</span><h2>الامتحانات</h2><p>الامتحانات الخاصة بالصفوف والشعب التي تدرّسها.</p></div></div>
+        <div class="table-wrap"><table><thead><tr><th>المادة</th><th>الصف/الشعبة</th><th>التاريخ</th><th>الوقت</th><th>القاعة</th></tr></thead><tbody id="examsTable"></tbody></table></div>
+      </section>
+
+      <section id="schedule" class="page-section">
+        <div class="section-head"><div><span class="eyebrow">الجداول</span><h2>جدولي الأسبوعي</h2><p>الحصص المسندة إليك.</p></div></div>
+        <div class="table-wrap"><table><thead><tr><th>اليوم</th><th>الحصة</th><th>الصف/الشعبة</th><th>المادة</th></tr></thead><tbody id="scheduleTable"></tbody></table></div>
+      </section>
+
+      <section id="homework" class="page-section">
+        <div class="section-head"><div><span class="eyebrow">التعلم</span><h2>الواجبات</h2><p>أنشئ واجباً واربطه بتكليف تدريسي محدد.</p></div><button class="primary" id="addHomeworkBtn">＋ واجب جديد</button></div>
+        <div class="cards-grid" id="homeworkList"></div>
+      </section>
+
+      <section id="announcements" class="page-section">
+        <div class="section-head"><div><span class="eyebrow">التواصل</span><h2>التنبيهات</h2><p>التنبيهات المرسلة إليك أو إلى الصفوف التي تدرّسها.</p></div></div>
+        <div id="announcementsList" class="activity-list large"></div>
+      </section>
+    </main>
+  </div>
+
+  <div id="modal" class="modal"><div class="modal-card"><button class="modal-close" id="modalClose">×</button><div id="modalContent"></div></div></div>
+  <script type="module" src="teacher.js"></script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>بوابة الطالب | نظام إدارة المدرسة</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="student.css">
+</head>
+<body>
+<div id="authOverlay" class="overlay"></div>
+<div class="app">
+<aside class="sidebar" id="sidebar">
+  <div class="brand"><div class="logo">S</div><div><b id="schoolName">مدرستي</b><small>بوابة الطالب</small></div></div>
+  <nav>
+    <button class="nav active" data-section="dashboard">⌂ الرئيسية</button>
+    <button class="nav" data-section="assignments">📚 الواجبات</button>
+    <button class="nav" data-section="exams">📝 الامتحانات</button>
+    <button class="nav" data-section="schedule">▦ الجدول الأسبوعي</button>
+    <button class="nav" data-section="attendance">✓ غياباتي</button>
+    <button class="nav" data-section="grades">📊 درجاتي</button>
+    <button class="nav" data-section="notifications">🔔 التنبيهات</button>
+    <button class="nav" data-section="profile">👤 ملفي الدراسي</button>
+  </nav>
+  <button id="logout" class="logout">تسجيل الخروج</button>
+</aside>
+<main>
+<header><button id="menu" class="menu">☰</button><div><small>بوابة الطالب</small><h1 id="pageTitle">الرئيسية</h1></div><span id="status" class="pill">متصل</span></header>
+<div id="toast"></div>
+<section id="dashboard" class="section active">
+  <div class="hero"><div><small>مرحباً بك</small><h2>أهلاً، <span id="studentName">الطالب</span> 👋</h2><p id="classInfo">جاري تحميل بياناتك...</p></div><div class="date" id="today"></div></div>
+  <div class="stats">
+    <div><span>واجبات نشطة</span><b id="statAssignments">0</b></div>
+    <div><span>امتحانات قادمة</span><b id="statExams">0</b></div>
+    <div><span>أيام الغياب</span><b id="statAbsent">0</b></div>
+    <div><span>متوسط الدرجات</span><b id="statAverage">-</b></div>
+  </div>
+  <div class="grid2"><article class="card"><div class="cardhead"><h3>آخر التنبيهات</h3><button data-section="notifications" class="link">عرض الكل</button></div><div id="latestNotifications"></div></article>
+  <article class="card"><div class="cardhead"><h3>الامتحانات القادمة</h3><button data-section="exams" class="link">عرض الجدول</button></div><div id="upcomingExams"></div></article></div>
+</section>
+<section id="assignments" class="section"><div class="sectionhead"><h2>الواجبات</h2><p>الواجبات المرسلة إلى صفك وشعبتك.</p></div><div id="assignmentsList" class="cards"></div></section>
+<section id="exams" class="section"><div class="sectionhead"><h2>الامتحانات</h2><p>مواعيد الامتحانات والقاعات والمواد.</p></div><div class="tablewrap"><table><thead><tr><th>المادة</th><th>التاريخ</th><th>الوقت</th><th>القاعة</th></tr></thead><tbody id="examsTable"></tbody></table></div></section>
+<section id="schedule" class="section"><div class="sectionhead"><h2>الجدول الأسبوعي</h2><p>جدول حصص صفك وشعبتك.</p></div><div id="scheduleWrap" class="tablewrap"></div></section>
+<section id="attendance" class="section"><div class="sectionhead"><h2>غياباتي</h2><p>سجل الحضور والغياب والتأخير والإجازات.</p></div><div class="stats mini"><div><span>حاضر</span><b id="pCount">0</b></div><div><span>غائب</span><b id="aCount">0</b></div><div><span>متأخر</span><b id="lCount">0</b></div><div><span>إجازة</span><b id="vCount">0</b></div></div><div class="tablewrap"><table><thead><tr><th>التاريخ</th><th>الحالة</th></tr></thead><tbody id="attendanceTable"></tbody></table></div></section>
+<section id="grades" class="section"><div class="sectionhead"><h2>درجاتي</h2><p>سجل درجاتك حسب المادة والامتحان.</p></div><div class="card"><div id="gradeSummary"></div></div><div class="tablewrap"><table><thead><tr><th>المادة</th><th>الامتحان</th><th>الدرجة</th><th>التاريخ</th></tr></thead><tbody id="gradesTable"></tbody></table></div></section>
+<section id="notifications" class="section"><div class="sectionhead"><h2>التنبيهات</h2><p>الإعلانات والتنبيهات الموجهة إليك أو إلى صفك.</p></div><div id="notificationsList" class="cards"></div></section>
+<section id="profile" class="section"><div class="sectionhead"><h2>ملفي الدراسي</h2><p>بيانات الحساب والصف والشعبة.</p></div><div id="profileCard" class="profile card"></div></section>
+</main></div>
+<script type="module" src="student.js"></script>
+</body></html>
